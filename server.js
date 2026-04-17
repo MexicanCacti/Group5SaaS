@@ -62,13 +62,10 @@ app.post('/upload', multer().single('image'), async(req, res) => {
   if (!req.file.mimetype.startsWith('image/')) {
     return res.status(400).send(errorHTML);
   }
-
   const [result] = await client.labelDetection(req.file.buffer);
   const labels = result.labelAnnotations;
   const formattedLabels = formatLabels(labels);
-
   const image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-
   const html = `
   <!DOCTYPE html>
   <html>
